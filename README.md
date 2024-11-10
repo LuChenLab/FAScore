@@ -11,6 +11,8 @@ The package support the multiple species including human, mouse, zebrafish, rat,
 
 
 
+![image](https://github.com/LuChenLab/FAScore/workflow.png)
+
 ## Contents
 
 [Installation](#Installation)    
