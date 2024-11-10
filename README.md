@@ -56,7 +56,7 @@ To install FAScore, you have two options: either install directly from GitHub or
 if (!requireNamespace("remotes", quietly = TRUE))
     install.packages("remotes")
 
-remotes::install_github("LuChenLab/DEMINERS/DecodeR")
+remotes::install_github("LuChenLab/FAScore/package")
 ```
 
 Alternatively, you can install FAScore using the source file downloaded from the repository :
@@ -102,9 +102,9 @@ The output will be an S4 object containing the following slots:
 - `rowRanges` : A GRanges object describing the ranges of AS events and corresponding gene and isoform IDs. It includes columns for **ASID**, **TranscriptID**, **GeneID**, **GeneName** and **matchTransID**. The **matchTransID** column stores the best-matching transcript for each gene based on maximum expression values (from `ISOFORM` data), aiding in mapping isoform structural information.
 - `GENE` : A data frame of gene expression values provided in the input.
 - `ISOFORM` : A data frame of isoform expression values provided in the input.
-- `Correlation` : A list containing the Spearman’s rank correlation coefficient (*\rho*) and corresponding p-value (*P*<sub>$\rho$</sub>) for genes or AS events.
+- `Correlation` : A list containing the Spearman’s rank correlation coefficient ($\rho$) and corresponding p-value (*P*<sub>$\rho$</sub>) for genes or AS events.
 - `Tau` : A list containing the specificity index ($\tau$) for genes and AS events, which quantifies the specificity of expression profiles. Higher values indicate greater specificity.
-- `Range` :  A list containing range value (R) for genes and AS events, representing the breadth of expression.
+- `Range` :  A list containing range value (*R*) for genes and AS events, representing the breadth of expression.
 - `Linear` : A list containing linear fit parameters (intercept, slope ($\beta$), r<sup>2</sup>), and the p-value (*P*<sub>$\beta$</sub>) for the linear fit of genes and AS events, representing the expression gradient.
 - `DyScore` : A list capturing dynamic scores for genes and AS events.
 - `Structure` : A data frame of isoform structural scores obtained from the APPRIS database.
