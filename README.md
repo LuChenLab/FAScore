@@ -39,7 +39,7 @@ in any species. The following figure shows the workflow of FAScore.
 </br> 
 
 <div align="center">
-<img width = '900' height ='320' src ="./v2/Fig1.png"/>
+<img width = '900' height ='320' src ="https://github.com/LuChenLab/FAScore/blob/main/workflow.png"/>
 </div>
 <br>
 
