@@ -9,7 +9,7 @@ ChooseIso(object, cores = 10)
 \arguments{
 \item{object}{A FAScore object. see the constructor function '\code{\link{FAScoreDataSet}}'.}
 
-\item{cores}{A numeric. The number of threads. (default is 10)}
+\item{cores}{A numeric. The number of threads. (default:10)}
 }
 \value{
 Return a transcript ID from multiple mapped transcripts. Storing in 'rowRanges' slot.

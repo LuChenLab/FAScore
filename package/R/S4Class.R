@@ -95,6 +95,7 @@ setValidity("FAScore", function(object) {
 #'
 #' @import S4Vectors
 #' @import SummarizedExperiment
+#' @importFrom GenomicRanges GRanges
 #'
 #' @return Return a S4 object of FAScore class.
 #' @export

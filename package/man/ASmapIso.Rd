@@ -4,14 +4,16 @@
 \alias{ASmapIso}
 \title{AS mapped to isoforms}
 \usage{
-ASmapIso(object, gtf, cores = 10)
+ASmapIso(object, gtf, AStype = "exonic", cores = 10)
 }
 \arguments{
 \item{object}{A FAScore object. see the constructor function '\code{\link{FAScoreDataSet}}'.}
 
 \item{gtf}{An annotation file was consistent with identifying AS.}
 
-\item{cores}{The number of threads. (default is 10)}
+\item{AStype}{The types of AS event sites, including 'exonic' (exonic sites in genomes) and 'intronic' (intronic sites in genomes, eg. splicing sits).}
+
+\item{cores}{The number of threads. (default:10)}
 }
 \value{
 Return a GRange object. The alternative splicing sites were aligned to transcripts by an annotation file.

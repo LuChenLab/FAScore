@@ -2,7 +2,7 @@
 #'
 #'
 #' @param object A FAScore object. see the constructor function '\code{\link{FAScoreDataSet}}'.
-#' @param cores A numeric. The number of threads. (default is 10)
+#' @param cores A numeric. The number of threads. (default:10)
 #'
 #' @importFrom dplyr `%>%`
 #' @importFrom parallel mclapply
@@ -16,7 +16,8 @@ ChooseIso <- function(object, cores = 10) {
   len <- rowRanges(object) %>% length()
 
   mclapply(1:len, function(x) {
-    id <- object@ISOFORM[IsoID[[x]], -1] %>%
+
+    id <- subset( object@ISOFORM[IsoID[[x]],], select= -gene_id) %>%
       rowSums(.) %>%
       which.max() %>%
       names()
