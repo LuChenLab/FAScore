@@ -88,7 +88,7 @@ GitHub or use the compressed source file:
 if (!requireNamespace("remotes", quietly = TRUE))
     install.packages("remotes")
 
-remotes::install_github("LuChenLab/DEMINERS/DecodeR")
+remotes::install_github("LuChenLab/FAScore/package")
 ```
 
 Alternatively, you can install FAScore using the source file downloaded
