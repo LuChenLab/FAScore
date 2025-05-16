@@ -95,7 +95,7 @@ Alternatively, you can install FAScore using the source file downloaded
 from the repository :
 
 ``` bash
-# Install DecodeR from a downloaded source file
+# Install FAScore from a downloaded source file
 R CMD INSTALL FAScore_0.2.0.tar.gz
 ```
 
