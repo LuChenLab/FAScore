@@ -96,7 +96,7 @@ from the repository :
 
 ``` bash
 # Install FAScore from a downloaded source file
-R CMD INSTALL FAScore_0.2.0.tar.gz
+R CMD INSTALL FAScore_0.3.0.tar.gz
 ```
 
 </br> </br>

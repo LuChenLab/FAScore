@@ -17,8 +17,12 @@
 #' @export
 #'
 CalcuDyScore <- function(object, maxRange, maxSlope = 1, type = "Gene") {
-  scaleRange <- object@Range[[type]]
+  if (class(object) != "FAScore") {
+    stop("Object must be a FAScore object")
+  }
 
+
+  scaleRange <- object@Range[[type]]
 
   scaleRange[scaleRange >= 0 & scaleRange < 1 / 5 * maxRange] <- 0
   scaleRange[scaleRange >= 1 / 5 * maxRange & scaleRange < 2 / 5 * maxRange] <- 0.2
@@ -26,7 +30,6 @@ CalcuDyScore <- function(object, maxRange, maxSlope = 1, type = "Gene") {
   scaleRange[scaleRange >= 3 / 5 * maxRange & scaleRange < 4 / 5 * maxRange] <- 0.6
   scaleRange[scaleRange >= 4 / 5 * maxRange & scaleRange < maxRange] <- 0.8
   scaleRange[scaleRange >= maxRange] <- 1
-
 
   scaleSlope <- object@Linear[[type]]$slope
   scaleSlope[scaleSlope >= maxSlope] <- 1
@@ -40,7 +43,6 @@ CalcuDyScore <- function(object, maxRange, maxSlope = 1, type = "Gene") {
 
 
   lapply(1:length(scaleSlope),function(x){
-    print(x)
 
     if(!is.na(scaleSlope[x]) & scaleSlope[x] > 0 ){
       Direct <- 1
@@ -58,7 +60,6 @@ CalcuDyScore <- function(object, maxRange, maxSlope = 1, type = "Gene") {
     }
     return(Direct)
   } ) %>% unlist -> Direct
-
 
 
   df <- cbind(

@@ -158,6 +158,10 @@ matchAppris <- function(object, gtf, species = NULL, appris = NULL) {
 mergeFeatures <- function(object) {
   ## merge features
   ### add appris
+  if (class(object) != "FAScore") {
+    stop("Object must be a FAScore object")
+  }
+
 
   df <- mcols(object@rowRanges) %>% as.data.frame
 
@@ -220,13 +224,16 @@ mergeFeatures <- function(object) {
 #'
 #' @importFrom stats predict
 #' @importFrom randomForest randomForest
-#' @importFrom mclust Mclust
 #'
 #' @return Return a FAScore object. The prediction results were added to the 'RFpredict' slot.
 #' @export
 #'
 
 CalcuFAScore <- function(object, model = NULL) {
+  if (class(object) != "FAScore") {
+    stop("Object must be a FAScore object")
+  }
+
   if( is.null(model) ){
     model <- readRDS(system.file("extdata", "model.Rds", package = "FAScore", mustWork = TRUE))
   } else{
@@ -234,30 +241,30 @@ CalcuFAScore <- function(object, model = NULL) {
   }
 
   ### predict score
-
   test_data <- mergeFeatures(object)
   test_data <- test_data[!is.na(test_data$AS.Slope), ]
 
   test_data2 <- subset(test_data, select = -c(
-    ASDyScore, GeDyScore, AS, ASID, TranscriptID,
-    GeneID, GeneName, matchTransID, matchGeneID
+    ASDyScore, GeDyScore, ASID, TranscriptID,
+    GeneID, GeneName, TranscriptName, matchTransID, matchGeneID
   ))
 
-  pred_prob <- predict(model, newdata = test_data2, type = "prob")
-  pred_prob <- as.data.frame(pred_prob)
-  res <- cbind(test_data, FAScore = pred_prob$Func)
+  if(class(model) == "list"){
+    lapply(model, function(x){
+      pred_prob <- predict(x, newdata = test_data2, type = "prob")
+      pred_prob <- as.data.frame(pred_prob) %>% .$`1`
+    }) %>% do.call(cbind,.) -> tmp
 
-  ### classify by GMM
-  res$`-log2(FAScore)` <- -log2(res$FAScore + 0.00001)
-  gmm_model <- Mclust(res$`-log2(FAScore)`, G = 3, modelNames = "V")
+    pred_prob <- rowMeans(tmp)
 
-  means <- gmm_model$parameters$mean
+  } else{
+    pred_prob <- predict(model, newdata = test_data2, type = "prob")
+    pred_prob <- as.data.frame(pred_prob) %>% .$`1`
+  }
 
-  res$FASType <- ifelse(res$`-log2(FAScore)` > mean(means[1:2]), ifelse(res$`-log2(FAScore)` > mean(means[2:3]), "NonFunc", "UnCertain"), "Func" )
-
+  res <- cbind(test_data, FAScore = pred_prob)
 
   object@RFpredict <- res
-  object@GMM <- gmm_model$parameters
 
   return(object)
 }
@@ -265,6 +272,62 @@ CalcuFAScore <- function(object, model = NULL) {
 
 
 
+#' classify by GMM
+#'
+#' @param object A FAScore object. see the constructor function '\code{\link{FAScoreDataSet}}'.
+#' @param LOG A numeric vector. FAScore log transformed, 2 or 10. Default is NULL.
+#' @param silent A logic value. Drawing the plot.
+#' @param main The title of the plot.
+#'
+#' @importFrom mclust Mclust
+#' @import ggplot2
+#'
+#' @return Return a FAScore object or a figure. The classification result was added to the 'RFpredict' slot.
+#' And the fitting result of GMM was added to the 'GMM' slot.
+#' @export
+#'
+
+calcuGMM <- function(object, LOG = NULL, silent = F, main = NULL){
+  if (class(object) != "FAScore") {
+    stop("Object must be a FAScore object")
+  }
+
+  res = object@RFpredict
+  res$FAScore[is.na(res$FAScore)] <- 0
+
+  if(LOG == 2){
+    res$`-log2(FAScore)` <- -log2(res$FAScore + 0.00001)
+    gmm_model <- Mclust(res$`-log2(FAScore)`, G = 3, modelNames = "V")
+    means <- gmm_model$parameters$mean
+    res$FASType <- ifelse(res$`-log2(FAScore)` > mean(means[1:2]), ifelse(res$`-log2(FAScore)` > mean(means[2:3]), "NonFunc", "UnCertain"), "Func" )
+    density_data <- data.frame(x = seq(min(res$`-log2(FAScore)`), max(res$`-log2(FAScore)`), length.out = 100))
+
+  } else if(LOG == 10){
+    res$`-log10(FAScore)` <- -log10(res$FAScore + 0.00001)
+    gmm_model <- Mclust(res$`-log10(FAScore)`, G = 3, modelNames = "V")
+    means <- gmm_model$parameters$mean
+    res$FASType <- ifelse(res$`-log10(FAScore)` > mean(means[1:2]), ifelse(res$`-log10(FAScore)` > mean(means[2:3]), "NonFunc", "UnCertain"), "Func" )
+    density_data <- data.frame(x = seq(min(res$`-log10(FAScore)`), max(res$`-log10(FAScore)`), length.out = 100))
+
+  } else{
+    gmm_model <- Mclust(res$FAScore, G = 3, modelNames = "V")
+    means <- gmm_model$parameters$mean
+    res$FASType <- ifelse(res$FAScore > mean(means[1:2]), ifelse(res$FAScore > mean(means[2:3]), "NonFunc", "UnCertain"), "Func" )
+    density_data <- data.frame(x = seq(min(res$FAScore), max(res$FAScore), length.out = 100))
+
+  }
+
+  object@GMM <- gmm_model$parameters
+  object@RFpredict$FASType <- res$FASType
+
+  if(silent == T){
+
+    p1 <- plotDistrib(object, names = main, LOG = LOG)
+    print(p1)
+  } else{
+    return(object)
+  }
+}
 
 
 

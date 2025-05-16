@@ -11,6 +11,7 @@
 #' @importFrom GenomicRanges GRangesList
 #' @importFrom GenomicFeatures makeTxDbFromGFF
 #' @importFrom GenomicFeatures intronsByTranscript
+#' @importFrom SummarizedExperiment rowRanges
 #' @importFrom rtracklayer import
 #' @importFrom parallel mclapply
 #'
@@ -19,6 +20,10 @@
 #'
 
 ASmapIso <- function(object, gtf, AStype = "exonic", cores = 10) {
+  if (class(object) != "FAScore") {
+    stop("Object must be a FAScore object")
+  }
+
   mygr <- rownames(object) %>% GRanges()
   gtf_exon <- rtracklayer::import(gtf) %>% subset(., type == "exon")
   col <- grep("id|name", colnames(mcols(gtf_exon)), value = T) %>% grep("gene|transcript",., value = T)
@@ -41,8 +46,6 @@ ASmapIso <- function(object, gtf, AStype = "exonic", cores = 10) {
     }, mc.cores = 10) %>% GRangesList(.) %>%
       unlist() %>%
       .[,c("ASID","TranscriptID","TranscriptName","GeneID","GeneName")] %>% unique
-
-    return(MyASmapIso)
 
   } else if(AStype == "intronic"){
     gtf_txdb <- makeTxDbFromGFF(gtf)
@@ -81,8 +84,8 @@ ASmapIso <- function(object, gtf, AStype = "exonic", cores = 10) {
 
 
 
-utils::globalVariables(c(".", "type", "ASDyScore", "GeDyScore", "AS", "ASID", "TranscriptID",
-                         "GeneID", "GeneName", "matchTransID", "matchGeneID", "gene_id", "Run",
+utils::globalVariables(c(".", "type", "ASDyScore", "GeDyScore", "AS", "ASID", "TranscriptID","density","x","y1","y2","y3",
+                         "GeneID", "GeneName", "matchTransID", "matchGeneID", "gene_id", "Run","TranscriptName",
                          "Exp", "FAScore", "Color", "value", "CellType", "Type"))
 
 
