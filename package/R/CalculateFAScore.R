@@ -279,7 +279,7 @@ CalcuFAScore <- function(object, model = NULL) {
 #' @param silent A logic value. Drawing the plot.
 #' @param main The title of the plot.
 #'
-#' @importFrom mclust Mclust
+#' @import mclust
 #' @import ggplot2
 #'
 #' @return Return a FAScore object or a figure. The classification result was added to the 'RFpredict' slot.
