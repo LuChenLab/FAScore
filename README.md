@@ -13,7 +13,7 @@ FAScore outputs both DyScore (dynamic score) and FAScore (functional score) for 
 </br>
 
 <div align="center">
-<img width = '900' height ='320' src ="https://github.com/LuChenLab/FAScore/figure/blob/main/workflow.png"/>
+<img width = '900' height ='320' src ="https://github.com/LuChenLab/FAScore/blob/master/figure/workflow.png"/>
 </div>
 
 <br>
@@ -510,7 +510,7 @@ calcuGMM(MyObj, LOG = 2, silent =T, main="Mouse")
 </br>
 
 <div align="left">
-<img width = '350' height ='300' src ="https://github.com/LuChenLab/FAScore/figure/blob/main/GMM.png"/>
+<img width = '350' height ='300' src ="https://github.com/LuChenLab/FAScore/blob/master/figure/GMM.png"/>
 </div>
 
 <br>
