@@ -48,7 +48,7 @@ for( s in SPECIES[1:2]){
     MyObj <- ChooseIso(MyObj)
     MyObj <- matchAppris(MyObj, gtf = mygtf$BM[[s]], species = s)
     MyObj <- CalcuFAScore(MyObj, model = model)
-    MyObj <- calcuGMM(MyObj, LOG = 2)
+    MyObj <- calcuGMM(MyObj)
     FAScore_HD[[s]][[l]] <- MyObj
   }
 }
@@ -83,7 +83,7 @@ for( s in Species){
   MyObj <- ChooseIso(MyObj)
   MyObj <- matchAppris(MyObj, gtf = mygtf$FL[[s]], species = s)
   MyObj <- CalcuFAScore(MyObj, model = model)
-  MyObj <- calcuGMM(MyObj, LOG = 2)
+  MyObj <- calcuGMM(MyObj)
   FAScore_FHO[[s]] <- MyObj
 }
 
