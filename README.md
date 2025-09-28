@@ -33,7 +33,6 @@ in 11 species (human, macaque, chimpanzee, mouse, rat, pig, cow,
 chicken, zebrafish, fruitfly and C. elegans) and DyScore calculation in
 any species.
 
-</br> </br>
 
 <div align="center">
 <img width = '900' height ='320' src ="https://github.com/LuChenLab/FAScore/blob/master/figure/workflow.png"/>
