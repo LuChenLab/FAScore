@@ -35,8 +35,6 @@ any species.
 
 </br> </br>
 
-</br>
-
 <div align="center">
 <img width = '900' height ='320' src ="https://github.com/LuChenLab/FAScore/blob/master/figure/workflow.png"/>
 </div>
